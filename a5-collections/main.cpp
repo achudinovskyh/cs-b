@@ -1,6 +1,5 @@
 #include <iostream>
 #include "mylinkedlist.h"
-#include "mymap.h"
 #include "mypriorityqueue.h"
 #include "myqueue.h"
 #include "myvector.h"
@@ -87,20 +86,7 @@ int main()
     prQue.pop();
     cout << "top() after pop() " <<  prQue.top().first << " : "<< prQue.top().second << endl << endl;
 
-//===========================================================================
-    MyMap<int,int> map;
-    cout << "===== MyMap test =====\n\n";
-    map.insert(4,4);
-    map.insert(3,3);
-    map[1]++;
-    map[2] = 2;
 
-    if(!map.isEmpty()){
-        cout << "Not empty!!!\n";
-    }
-    for(MyMap<int,int>::iterator it = map.begin(); it != map.end(); it++){
-        cout << it.node->key << " : " << it.node->value << endl;
-    }
 
 
 
