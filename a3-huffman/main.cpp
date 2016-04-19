@@ -21,7 +21,6 @@ int main()
             continue;
         }else if(ch == '2')
         {
-            cout << "\n\n!!!WARNING!!! If you have the SOURCE file in the same folder with zipped file\n it will be replaced by UNZIPPED FILE!!!\n\n";
             cout << "Enter file path.\n";
             cin >> filePath;
             myArch.unzipFile(&filePath);
