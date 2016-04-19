@@ -297,7 +297,7 @@ void MyMap<K,V>::printTree(Node* root,int n){
     for(int i = 0; i < n;i++){
         cout << " ";
     }
-    cout << "K:" << root->key << " V:"<< root->value << endl;
+    cout << "K:" << root->key << " V:"<< root->value << " c. " << root->color<< endl;
     if(root->left){
         printTree(root->left,n+10);
     }

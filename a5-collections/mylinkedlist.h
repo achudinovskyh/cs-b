@@ -35,10 +35,6 @@ public:
     void push_back(const T&);
     void pop_front();
     void pop_back();
-    struct iterator{
-        T first = first->data;
-
-    };
 };
 
 

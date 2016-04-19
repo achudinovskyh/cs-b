@@ -9,3 +9,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp
 
+HEADERS += \
+    mylinkedlist.h \
+    mymap.h \
+    mypriorityqueue.h \
+    myqueue.h \
+    myvector.h
+
