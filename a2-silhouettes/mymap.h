@@ -5,32 +5,34 @@
 using namespace std;
 
 template <class K, class V>
-class MyMap{
+class MyMap
+{
     struct Node {
         K key;
         V value;
         bool color;
         Node *left, *right, *parent;
 
-        Node(){
+        Node()
+        {
             left = right = parent = 0;
         }
-        Node(K _key,V _value) {
+        Node(K _key,V _value)
+        {
             left = right = parent = 0;
             key = _key;
             value = _value;
             color = 1;
         }
-        Node(K _key,V _value, Node* _parent){
+        Node(K _key,V _value, Node* _parent)
+        {
             left = right  = 0;
             parent = _parent;
             key = _key;
             value = _value;
             color = 1;
         }
-        ~Node(){
-
-        }
+        ~Node(){}
     };
 
     int mSize;
@@ -48,8 +50,9 @@ class MyMap{
     Node* findMaxKey(Node*);
 
     void deleteTree(Node* ptr);
-    V* findValue(Node* ,const K&);
+    V* findValue(Node* ,const K& );
 public:
+
     struct iterator{
        Node* node;
        iterator(Node* node = 0);
@@ -70,18 +73,21 @@ public:
     void printTree(Node* ptr = root, int n = 0);
     V& operator[](const K&);
     bool isEmpty()const;
+
 };
 
 
 
 template <class K, class V>
-MyMap<K,V>::MyMap(){
+MyMap<K,V>::MyMap()
+{
     mSize = 0;
     root = 0;
 }
 
 template <class K, class V>
-MyMap<K,V>::~MyMap(){
+MyMap<K,V>::~MyMap()
+{
     deleteTree(root);
 }
 
@@ -212,6 +218,7 @@ void MyMap<K,V>::case2l(Node* x){
         xRight->parent = parent;
     }
     balanceTree(x->right);
+
 }
 
 template <class K, class V>
@@ -241,7 +248,8 @@ void MyMap<K,V>::case3l(Node* x){
 }
 
 template <class K, class V>
-typename MyMap<K,V>::Node *MyMap<K,V>::findMinKey(Node* ptr){
+typename MyMap<K,V>::Node *MyMap<K,V>::findMinKey(Node* ptr)
+{
     if(ptr->left){
         ptr = findMinKey(ptr->left);
     }
@@ -249,7 +257,8 @@ typename MyMap<K,V>::Node *MyMap<K,V>::findMinKey(Node* ptr){
 }
 
 template <class K, class V>
-typename MyMap<K,V>::Node *MyMap<K,V>::findMaxKey(Node* ptr){
+typename MyMap<K,V>::Node *MyMap<K,V>::findMaxKey(Node* ptr)
+{
     if(ptr->right){
         ptr = findMaxKey(ptr->right);
     }
@@ -257,7 +266,8 @@ typename MyMap<K,V>::Node *MyMap<K,V>::findMaxKey(Node* ptr){
 }
 
 template <class K, class V>
-void MyMap<K,V>::deleteTree(MyMap::Node *ptr){
+void MyMap<K,V>::deleteTree(MyMap::Node *ptr)
+{
     // walk in recursion to leaf's and on the way back deleting each Node.
     if(ptr->left != 0){
         deleteTree(ptr->left);
@@ -269,12 +279,14 @@ void MyMap<K,V>::deleteTree(MyMap::Node *ptr){
 }
 
 template <class K, class V>
-typename MyMap<K,V>::iterator MyMap<K,V>::begin(){
+typename MyMap<K,V>::iterator MyMap<K,V>::begin()
+{
     return iterator(findMinKey(root));
 }
 
 template <class K, class V>
-typename MyMap<K,V>::iterator MyMap<K,V>::end(){
+typename MyMap<K,V>::iterator MyMap<K,V>::end()
+{
     if(mSize){
         iterator it = findMaxKey(root);
         it.hasNext = false;
@@ -299,7 +311,8 @@ void MyMap<K,V>::printTree(Node* root,int n){
 }
 
 template <class K, class V>
-V* MyMap<K,V>::findValue(Node* ptr, const K& _key){
+V* MyMap<K,V>::findValue(Node* ptr, const K& _key)
+{
     V* tempValue = 0;
     if(ptr->key == _key){
        tempValue = &ptr->value;
@@ -314,7 +327,8 @@ V* MyMap<K,V>::findValue(Node* ptr, const K& _key){
 }
 
 template <class K, class V>
-V& MyMap<K,V>::operator[](const K& key){
+V& MyMap<K,V>::operator[](const K& key)
+{
     V* temp = 0;
     if(root){
         temp = findValue(root,key);
@@ -328,18 +342,21 @@ V& MyMap<K,V>::operator[](const K& key){
 }
 
 template <class K, class V>
-bool MyMap<K,V>::isEmpty() const{
+bool MyMap<K,V>::isEmpty() const
+{
    return !mSize;
 }
 
 template <class K, class V>
-MyMap<K,V>::iterator::iterator(MyMap::Node* _node){
+MyMap<K,V>::iterator::iterator(MyMap::Node* _node)
+{
     this->node = _node;
     hasNext = true;
 }
 
 template <class K, class V>
-void MyMap<K,V>::iterator::operator++(){
+void MyMap<K,V>::iterator::operator++()
+{
     if(hasNext){
         node = findMinAfterThis(this->node->key,root);
     }
@@ -349,7 +366,8 @@ void MyMap<K,V>::iterator::operator++(){
 }
 
 template <class K, class V>
-void MyMap<K,V>::iterator::operator++(int){
+void MyMap<K,V>::iterator::operator++(int)
+{
     if(hasNext){
         node = findMinAfterThis(this->node->key,root);
     }
@@ -359,17 +377,20 @@ void MyMap<K,V>::iterator::operator++(int){
 }
 
 template <class K, class V>
-bool MyMap<K,V>::iterator::operator!=(MyMap::iterator){
+bool MyMap<K,V>::iterator::operator!=(MyMap::iterator)
+{
     return this->node != 0;
 }
 
 template <class K, class V>
-typename MyMap<K,V>::Node *MyMap<K,V>::iterator::operator->(){
+typename MyMap<K,V>::Node *MyMap<K,V>::iterator::operator->()
+{
     return this->node;
 }
 
 template <class K, class V>
-typename MyMap<K,V>::Node *MyMap<K,V>::iterator::findMinAfterThis(K incValue, Node *ptr){
+typename MyMap<K,V>::Node *MyMap<K,V>::iterator::findMinAfterThis(K incValue, Node *ptr)
+{
     Node* tempNode;
     if(ptr->key > incValue){
         if(ptr->left != NULL && findMaxKey(ptr->left) > incValue){
@@ -386,11 +407,13 @@ typename MyMap<K,V>::Node *MyMap<K,V>::iterator::findMinAfterThis(K incValue, No
 }
 
 template <class K, class V>
-K MyMap<K,V>::iterator::findMaxKey(MyMap::Node *ptr){
+K MyMap<K,V>::iterator::findMaxKey(MyMap::Node *ptr)
+{
     if(ptr->right){
         findMaxKey(ptr->right);
     }
     return ptr->key;
+
 }
 
 #endif // MYMAP_H

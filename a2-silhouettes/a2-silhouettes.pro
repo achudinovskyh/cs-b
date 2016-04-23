@@ -10,5 +10,6 @@ SOURCES += main.cpp \
     silcounter.cpp
 
 HEADERS += \
-    silcounter.h
+    silcounter.h \
+    mymap.h
 

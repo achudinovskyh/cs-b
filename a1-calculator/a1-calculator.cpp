@@ -3,14 +3,14 @@
 double CalcLogic::calculate(string& expr){
     // initialize pointer to char
     pt = &expr[0];
-    validate(&expr);
+    validate(expr);
 
     // begin to evaluate the expression
     double result = thirdPriority();
     return result;
 }
 
-double CalcLogic::digit(){
+double CalcLogic::number(){
     // variable that store current number
     double result = 0.0;
 
@@ -35,7 +35,6 @@ double CalcLogic::digit(){
             if(dividerForPoint >= 10){
                 dividerForPoint *= 10;
             }
-
         }else if(*pt == '.'){
             pt++;
             enlarger = 1;
@@ -47,9 +46,10 @@ double CalcLogic::digit(){
     }
 }
 
-double  CalcLogic::braces(){
+double  CalcLogic::brackets(){
     // checking for a braces if it is not a brace checking for digit
     double result;
+
     switch (*pt) {
     case '(':
         pt++;
@@ -57,18 +57,18 @@ double  CalcLogic::braces(){
         pt++;
         return result;
     default:
-
-        // cheking for digit's
-        return digit();
+        // cheking for number's
+        return number();
     }
 }
 
 double CalcLogic::firstPriority(){
     // walk in recursion to higher priority
-    double result = braces();
+    double result = brackets();
 
     // checking for function or veriables
     string function = "";
+
     while(true) {
         if(*pt >= 'a' && *pt <= 'z'){
             function += *pt;
@@ -80,51 +80,37 @@ double CalcLogic::firstPriority(){
             break;
         }
     }
+
         if (function.compare("sin") == 0) {
-            result = sin(braces());
+            result = sin(brackets());
         } else if (function.compare("cos") == 0) {
-            result = cos(braces());
+            result = cos(brackets());
         } else if(function.compare("tan") == 0){
-            result = tan(braces());
+            result = tan(brackets());
         }  else if (function.compare("asin") == 0) {
-            result = asin(braces());
+            result = asin(brackets());
         } else if (function.compare("acos") == 0) {
-            result = acos(braces());
+            result = acos(brackets());
         } else if(function.compare("atan") == 0){
-            result = atan(braces());
+            result = atan(brackets());
         }  else if (function.compare("sinh") == 0) {
-            result = sinh(braces());
+            result = sinh(brackets());
         } else if (function.compare("cosh") == 0) {
-            result = cosh(braces());
+            result = cosh(brackets());
         } else if(function.compare("tanh") == 0){
-            result = tanh(braces());
+            result = tanh(brackets());
         } else if (function.compare("exp") == 0) {
-            result = exp(braces());
+            result = exp(brackets());
         } else if(function.compare("sqrt") == 0){
-            result = sqrt(braces());
+            result = sqrt(brackets());
         } else if(function.compare("^") == 0){
-            result = pow(result, braces());
+            result = pow(result, brackets());
         } else if(function.compare("log") == 0){
-            result = log2(braces());
+            result = log2(brackets());
         } else if (function.compare("fabs") == 0) {
-            result = fabs(braces());
+            result = fabs(brackets());
         } else if (function.compare("floor") == 0) {
-            result = floor(braces());
-        }else if(function.compare("a") == 0){
-            cout << "Enter value for a: " << endl;
-            double a = 0;
-            cin >> a;
-            return a;
-        }else if(function.compare("b") == 0){
-            cout << "Enter value for b: " << endl;
-            double b = 0;
-            cin >> b;
-            return b;
-        }else if(function.compare("c") == 0){
-            cout << "Enter value for c: " << endl;
-            double c = 0;
-            cin >> c;
-            return c;
+            result = floor(brackets());
         }
 
     return result;
@@ -173,15 +159,15 @@ double CalcLogic::thirdPriority(){
     }
 }
 
-void CalcLogic::validate(string* pExp){
+void CalcLogic::validate(string& pExp){
     //remove space's and tolowercase simbols
-    for(string::size_type i = 0; i < (*pExp).size(); i++){ 
-        if((*pExp)[i] == ' '){
-            (*pExp).erase(i,1);
+    for(string::size_type i = 0; i < pExp.size(); i++){
+        if(pExp[i] == ' '){
+            pExp.erase(i,1);
             i--;
         }
-        if(isalpha((*pExp)[i])){
-            tolower((*pExp)[i]);
+        if(isalpha(pExp[i])){
+            tolower(pExp[i]);
         }
     }
 
@@ -194,41 +180,41 @@ void CalcLogic::validate(string* pExp){
     string br = "(";
     string br1 = ")";
 
-    for(string::size_type i = 0; i < (*pExp).size(); i++){
+    for(string::size_type i = 0; i < pExp.size(); i++){
             // check whether there is in expression two signs in a row
-            if((*pExp)[i] == '+'|| (*pExp)[i] == '-' || (*pExp)[i] == '*' || (*pExp)[i] == '/'){
-                if((*pExp)[i+1] == '+'|| (*pExp)[i+1] == '-' || (*pExp)[i+1] == '*' || (*pExp)[i+1] == '/'){
+            if(pExp[i] == '+'|| pExp[i] == '-' || pExp[i] == '*' || pExp[i] == '/'){
+                if(pExp[i+1] == '+'|| pExp[i+1] == '-' || pExp[i+1] == '*' || pExp[i+1] == '/'){
 
                     // if there is we insert open brace between them and increment a counter
-                    (*pExp).insert(i+1,br);
+                    pExp.insert(i+1,br);
                     br_counter++;
 
                     // creating another variable for imaginary substring that is in your braces
                     string::size_type j = i+3;
 
                     // if the next character is a digit
-                    if(isdigit((*pExp)[j])){
+                    if(isdigit(pExp[j])){
                         // we move forward until it is over
-                        while(isdigit((*pExp)[j]) || (*pExp)[j] == '.'){
+                        while(isdigit(pExp[j]) || pExp[j] == '.'){
                             j++;
                         }
                         // and inserting closing brace
                         while(br_counter != 0){
-                            (*pExp).insert(j,br1);
+                            pExp.insert(j,br1);
                             br_counter--;
                         }
 
                     // if we pass an open brace, count it
-                    }if((*pExp)[j] == '('){
+                    }if(pExp[j] == '('){
                        open_br_counter++;
                        j++;
 
                        // move forward until we close all braces
                        while(open_br_counter != 0){
-                           if((*pExp)[j] == '('){
+                           if(pExp[j] == '('){
                                 open_br_counter++;
                                 j++;
-                           }else if((*pExp)[j] == ')'){
+                           }else if(pExp[j] == ')'){
                                open_br_counter--;
                                j++;
                            }else{
@@ -239,13 +225,11 @@ void CalcLogic::validate(string* pExp){
 
                        // closing all open braces that we inserted
                        while(br_counter != 0){
-                           (*pExp).insert(j,br1);
+                           pExp.insert(j,br1);
                            br_counter--;
                        }
                     }
                 }
             }
-
     }
-
 }

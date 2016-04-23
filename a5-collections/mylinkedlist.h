@@ -2,19 +2,16 @@
 #define MYLINKEDLIST_H
 
 template<typename T>
-class MyLinkedList
-{
+class MyLinkedList{
     struct Node {
         int data;
         Node* next;
         Node* prev;
-        Node()
-        {
+        Node(){
             data = 0;
             next = prev = 0;
         }
-        Node(int _data)
-        {
+        Node(int _data){
             data = _data;
             next = prev = 0;
         }
@@ -22,8 +19,6 @@ class MyLinkedList
     Node* first;
     Node* last;
     int lSize;
-
-
 public:
     MyLinkedList();
     ~MyLinkedList();
@@ -39,15 +34,13 @@ public:
 
 
 template<typename T>
-MyLinkedList<T>::MyLinkedList()
-{
+MyLinkedList<T>::MyLinkedList(){
     first = last = 0;
     lSize = 0;
 }
 
 template<typename T>
-MyLinkedList<T>::~MyLinkedList()
-{
+MyLinkedList<T>::~MyLinkedList(){
     if(lSize){
         while(first != last){
             Node* delPtr = first;
@@ -60,36 +53,27 @@ MyLinkedList<T>::~MyLinkedList()
 
 
 template<typename T>
-bool MyLinkedList<T>::empty() const
-{
-    if(lSize){
-        return false;
-    }else{
-        return true;
-    }
+bool MyLinkedList<T>::empty() const{
+    return !lSize;
 }
 
 template<typename T>
-int MyLinkedList<T>::size() const
-{
+int MyLinkedList<T>::size() const{
     return lSize;
 }
 
 template<typename T>
-T& MyLinkedList<T>::front() const
-{
+T& MyLinkedList<T>::front() const{
     return first->data;
 }
 
 template<typename T>
-T& MyLinkedList<T>::back() const
-{
+T& MyLinkedList<T>::back() const{
     return last->data;
 }
 
 template<typename T>
-void MyLinkedList<T>::push_front(const T &_data)
-{
+void MyLinkedList<T>::push_front(const T &_data){
     if(lSize){
         Node* tempPtr = first;
         first = new Node(_data);
@@ -103,8 +87,7 @@ void MyLinkedList<T>::push_front(const T &_data)
 }
 
 template<typename T>
-void MyLinkedList<T>::push_back(const T &_data)
-{
+void MyLinkedList<T>::push_back(const T &_data){
     if(lSize){
         Node* tempPtr = last;
         last = new Node(_data);
@@ -118,8 +101,7 @@ void MyLinkedList<T>::push_back(const T &_data)
 }
 
 template<typename T>
-void MyLinkedList<T>::pop_front()
-{
+void MyLinkedList<T>::pop_front(){
     if(lSize == 1){
         first->next = first->prev = 0;
         delete first;
@@ -134,8 +116,7 @@ void MyLinkedList<T>::pop_front()
 }
 
 template<typename T>
-void MyLinkedList<T>::pop_back()
-{
+void MyLinkedList<T>::pop_back(){
     if(lSize > 1){
         Node* delPtr = last;
         last = last->prev;

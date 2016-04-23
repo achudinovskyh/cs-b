@@ -1,25 +1,30 @@
 #include <iostream>
 #include "silcounter.h"
 
-int main()
+int main(int argc, char* argv[])
 {
     SilCounter counter;
     string filePath;
-    char ch = 0;
-    cout << "Hello! This program will count silhouettes! \n\n";
+    cout << "Hello! This program will count silhouettes!" << endl << endl;
 
-    while(1){
-        cout << "Press 1 if you want to count silhouettes, or q to quit.\n";
-        cin >> ch;
-        if(ch == '1')
-        {
-            cout << "Enter file path to image.\n";
-            cin >> filePath;
-            cout << "\nThere are: " << counter.countSilhouettes(&filePath) << " silhouettes!\n\n";
-            continue;
-        }else if(ch == 'q')
-        {
-            break;
+    if(argc > 1){
+        for(int i = 1; i < argc; i++){
+            filePath = argv[i];
+            cout << "There are: " << counter.countSilhouettes(filePath) << " silhouettes in "<< filePath << endl << endl;
+        }
+    }else{
+        char ch = 0;
+        while(1){
+            cout << "Press 1 if you want to count silhouettes, or q to quit." << endl;
+            cin >> ch;
+            if(ch == '1'){
+                cout << "Enter file path to image." << endl;
+                cin >> filePath;
+                cout << "There are: " << counter.countSilhouettes(filePath) << " silhouettes!" << endl << endl;
+                continue;
+            }else if(ch == 'q'){
+                break;
+            }
         }
     }
 }

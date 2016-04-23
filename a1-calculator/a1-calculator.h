@@ -1,6 +1,5 @@
 #ifndef A1CALCULATOR
 #define A1CALCULATOR
-#include <iostream>
 #include <string>
 #include <cmath>
 
@@ -11,18 +10,25 @@ private:
 
     // pointer to char of expression string
     char* pt;
+
     // function that set expression to lowercase and puts braces
-    void validate(string* pExp);
+    void validate(string& pExp);
+
     // function that take's digits
-    double digit();
+    double number();
+
     // function that check braces
-    double braces();
+    double brackets();
+
     // function that check for variables sin cos ...
     double firstPriority();
+
     // function that check for * /
     double secondPriority();
+
     // function that check for + -
     double thirdPriority();
+
 public:
     // function which calculate an expression
    double calculate(string& expr);

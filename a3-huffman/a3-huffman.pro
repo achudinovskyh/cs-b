@@ -11,5 +11,6 @@ SOURCES += main.cpp \
     archiver.cpp
 
 HEADERS += \
-    archiver.h
+    archiver.h \
+    mypriorityqueue.h
 

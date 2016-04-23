@@ -26,7 +26,7 @@ template<typename T,typename U>
 void MyPriorityQueue<T,U>::bubbleUp(int position){
     int parent = (position - 1) / 2;
 
-    while(((*vec)[position]).first < ((*vec)[parent]).first){
+    while((parent >= 0) && ((*vec)[position]).first < ((*vec)[parent]).first){
         swap(position,parent);
         position = parent;
         parent = position / 2;
@@ -61,7 +61,7 @@ template<typename T,typename U>
 void MyPriorityQueue<T,U>::bubbleDown(int position){
     int lesserChildPos = findLesserChild(position);
 
-    while(((*vec)[position]).first > ((*vec)[lesserChildPos]).first){
+    while((lesserChildPos != -1) && ((*vec)[position]).first > ((*vec)[lesserChildPos]).first){
         swap(position,lesserChildPos);
         position = lesserChildPos;
         lesserChildPos = findLesserChild(position);
