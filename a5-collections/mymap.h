@@ -35,9 +35,9 @@ class MyMap{
     static Node* root;
 
     void balanceTree(Node*);
-    void case1(Node*);
-    void case2(Node*);
-    void case3(Node*);
+    void case1(Node*,bool left = false);
+    void case2(Node*,bool left = false);
+    void case3(Node*,bool left = false);
     void case1l(Node*);
     void case2l(Node*);
     void case3l(Node*);
@@ -125,11 +125,11 @@ void MyMap<K,V>::balanceTree(Node* x){
             }
         }else{
             if(x->parent->parent->left != 0 && x->parent->parent->left->color){
-                case1l(x);
+                case1(x,true);
             }else if((x->parent->parent->left == 0 || !x->parent->parent->left->color) && x == x->parent->left){
-                case2l(x);
+                case2(x,true);
             }else if((x->parent->parent->left == 0 || !x->parent->parent->left->color) && x == x->parent->right){
-                case3l(x);
+                case3(x,true);
             }
         }
     }
@@ -138,36 +138,55 @@ void MyMap<K,V>::balanceTree(Node* x){
 
 
 template <class K, class V>
-void MyMap<K,V>::case1(Node* x){
+void MyMap<K,V>::case1(Node* x,bool left){
     x->parent->color = 0;
     x->parent->parent->color = 1;
-    x->parent->parent->right->color = 0;
-    balanceTree(x->parent->parent);
-}
 
-template <class K, class V>
-void MyMap<K,V>::case2(Node* x){
-    Node* parent = x->parent;
-    Node* grandParent = x->parent->parent;
-    Node* xLeft = x->left;
-
-    grandParent->left = x;
-    x->parent = grandParent;
-    x->left = parent;
-    parent->parent = x;
-    parent->right = xLeft;
-    if(xLeft){
-        xLeft->parent = parent;
+    if(left){
+        x->parent->parent->left->color = 0;
+        balanceTree(x->parent->parent);
+    }else{
+        x->parent->parent->right->color = 0;
+        balanceTree(x->parent->parent);
     }
-    balanceTree(x->left);
 }
 
 template <class K, class V>
-void MyMap<K,V>::case3(Node* x){
-    Node* parentRight = x->parent->right;
+void MyMap<K,V>::case2(Node* x, bool left){
     Node* parent = x->parent;
     Node* grandParent = x->parent->parent;
-    Node* uncle = x->parent->parent->right;
+
+    if(left){
+        Node* xRight = x->right;
+
+        grandParent->right = x;
+        x->parent = grandParent;
+        x->right = parent;
+        parent->parent = x;
+        parent->left = xRight;
+        if(xRight){
+            xRight->parent = parent;
+        }
+        balanceTree(x->right);
+    }else{
+        Node* xLeft = x->left;
+
+        grandParent->left = x;
+        x->parent = grandParent;
+        x->left = parent;
+        parent->parent = x;
+        parent->right = xLeft;
+        if(xLeft){
+            xLeft->parent = parent;
+        }
+        balanceTree(x->left);
+    }
+}
+
+template <class K, class V>
+void MyMap<K,V>::case3(Node* x,bool left){
+    Node* parent = x->parent;
+    Node* grandParent = x->parent->parent;
 
     K tempKey = parent->key;
     parent->key = grandParent->key;
@@ -177,66 +196,32 @@ void MyMap<K,V>::case3(Node* x){
     parent->value = grandParent->value;
     grandParent->value = tempValue;
 
-    grandParent->left = x;
-    x->parent = grandParent;
-    grandParent->right = parent;
-    parent->parent = grandParent;
-    parent->left = parentRight;
-    parent->right = uncle;
-    if(uncle){
-        uncle->parent = parent;
-    }
-}
+    if(left){
+        Node* parentLeft = x->parent->left;
+        Node* uncle = x->parent->parent->left;
 
-template <class K, class V>
-void MyMap<K,V>::case1l(Node* x){
-    x->parent->color = 0;
-    x->parent->parent->color = 1;
-    x->parent->parent->left->color = 0;
-    balanceTree(x->parent->parent);
-}
+        grandParent->right = x;
+        x->parent = grandParent;
+        grandParent->left = parent;
+        parent->parent = grandParent;
+        parent->right = parentLeft;
+        parent->left = uncle;
+        if(uncle){
+            uncle->parent = parent;
+        }
+    }else{
+        Node* parentRight = x->parent->right;
+        Node* uncle = x->parent->parent->right;
 
-template <class K, class V>
-void MyMap<K,V>::case2l(Node* x){
-    Node* parent = x->parent;
-    Node* grandParent = x->parent->parent;
-    Node* xRight = x->right;
-
-    grandParent->right = x;
-    x->parent = grandParent;
-    x->right = parent;
-    parent->parent = x;
-    parent->left = xRight;
-    if(xRight){
-        xRight->parent = parent;
-    }
-    balanceTree(x->right);
-
-}
-
-template <class K, class V>
-void MyMap<K,V>::case3l(Node* x){
-    Node* parentLeft = x->parent->left;
-    Node* parent = x->parent;
-    Node* grandParent = x->parent->parent;
-    Node* uncle = x->parent->parent->left;
-
-    K tempKey = parent->key;
-    parent->key = grandParent->key;
-    grandParent->key = tempKey;
-
-    V tempValue = parent->value;
-    parent->value = grandParent->value;
-    grandParent->value = tempValue;
-
-    grandParent->right = x;
-    x->parent = grandParent;
-    grandParent->left = parent;
-    parent->parent = grandParent;
-    parent->right = parentLeft;
-    parent->left = uncle;
-    if(uncle){
-        uncle->parent = parent;
+        grandParent->left = x;
+        x->parent = grandParent;
+        grandParent->right = parent;
+        parent->parent = grandParent;
+        parent->left = parentRight;
+        parent->right = uncle;
+        if(uncle){
+            uncle->parent = parent;
+        }
     }
 }
 
