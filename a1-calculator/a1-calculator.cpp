@@ -179,10 +179,12 @@ void CalcLogic::validate(string& pExp){
         }
     }
 
+    //checking for variables
     if(variables.size()){
         for(map<char,string>::iterator it = variables.begin(); it != variables.end(); it++){
             char variable = it->first;
             string value = it->second;
+            //if there are, swapping them with their values
             for(int i = 0; i < pExp.size(); i++){
                 if(pExp[i] == variable && !isalpha(pExp[i-1]) && !isalpha(pExp[i+1])){
                     pExp.erase(i,1);

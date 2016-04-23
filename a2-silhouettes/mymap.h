@@ -38,9 +38,6 @@ class MyMap{
     void case1(Node*,bool left = false);
     void case2(Node*,bool left = false);
     void case3(Node*,bool left = false);
-    void case1l(Node*);
-    void case2l(Node*);
-    void case3l(Node*);
 
     Node* findMinKey(Node*);
     Node* findMaxKey(Node*);
