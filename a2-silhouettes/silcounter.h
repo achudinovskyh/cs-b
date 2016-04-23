@@ -10,8 +10,7 @@
 
 using namespace std;
 
-class SilCounter
-{
+class SilCounter{
     // method that read the image and create two dimensional array of colors from this image
     void createImageMatrixOfColour(string& filePath,int** &imageMatrix, int& width, int& height);
 

@@ -81,6 +81,7 @@ MyQueue<T>& MyQueue<T>::operator=(const MyQueue& income){
     }
     return *this;
 }
+
 template<typename T>
 bool MyQueue<T>::empty() const{
     return qSize;
@@ -130,6 +131,5 @@ void MyQueue<T>::pop(){
         qSize--;
     }
 }
-
 
 #endif // MYQUEUE_H

@@ -47,7 +47,7 @@ double CalcLogic::number(){
 }
 
 double  CalcLogic::brackets(){
-    // checking for a braces if it is not a brace checking for digit
+    // checking for a brackets if it is not a brace checking for number
     double result;
 
     switch (*pt) {

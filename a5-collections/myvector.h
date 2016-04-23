@@ -19,7 +19,6 @@ public:
     void pop_back();
 };
 
-
 template<typename T>
 MyVector<T>::MyVector(){
     array = 0;

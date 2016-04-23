@@ -32,7 +32,6 @@ public:
     void pop_back();
 };
 
-
 template<typename T>
 MyLinkedList<T>::MyLinkedList(){
     first = last = 0;
@@ -50,7 +49,6 @@ MyLinkedList<T>::~MyLinkedList(){
         delete first;
     }
 }
-
 
 template<typename T>
 bool MyLinkedList<T>::empty() const{

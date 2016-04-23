@@ -15,7 +15,7 @@ class MyMap{
         Node(){
             left = right = parent = 0;
         }
-        Node(K _key,V _value) {
+        Node(K _key,V _value){
             left = right = parent = 0;
             key = _key;
             value = _value;
@@ -28,9 +28,7 @@ class MyMap{
             value = _value;
             color = 1;
         }
-        ~Node(){
-
-        }
+        ~Node(){}
     };
 
     int mSize;
@@ -48,8 +46,9 @@ class MyMap{
     Node* findMaxKey(Node*);
 
     void deleteTree(Node* ptr);
-    V* findValue(Node* ,const K&);
+    V* findValue(Node* ,const K& );
 public:
+
     struct iterator{
        Node* node;
        iterator(Node* node = 0);
@@ -212,6 +211,7 @@ void MyMap<K,V>::case2l(Node* x){
         xRight->parent = parent;
     }
     balanceTree(x->right);
+
 }
 
 template <class K, class V>
@@ -391,6 +391,7 @@ K MyMap<K,V>::iterator::findMaxKey(MyMap::Node *ptr){
         findMaxKey(ptr->right);
     }
     return ptr->key;
+
 }
 
 #endif // MYMAP_H

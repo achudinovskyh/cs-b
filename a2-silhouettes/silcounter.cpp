@@ -8,8 +8,7 @@
  *  @param  width The width of the image
  *  @param  height The height of the image
  */
-void SilCounter::createImageMatrixOfColour(string& filePath, int** &imageMatrix, int &width, int &height)
-{
+void SilCounter::createImageMatrixOfColour(string& filePath, int** &imageMatrix, int &width, int &height){
     // creating QImage from image that was set by user
     QImage* image = new QImage(&filePath[0]);
 
@@ -45,7 +44,6 @@ void SilCounter::createImageMatrixOfColour(string& filePath, int** &imageMatrix,
             }
         }
     }
-
     delete image;
 }
 
@@ -57,8 +55,7 @@ void SilCounter::createImageMatrixOfColour(string& filePath, int** &imageMatrix,
  *  @param  height The height of the image
  *  @param  backgroundColor Variable that indicate background color
  */
-void SilCounter::identifyColors(int** imageMatrix, int width, int height,int& backgroundColor)
-{
+void SilCounter::identifyColors(int** imageMatrix, int width, int height,int& backgroundColor){
     // map with key color and value amount of pixels with this color
     MyMap<int,int> colorFreq;
 
@@ -128,8 +125,7 @@ void SilCounter::identifyColors(int** imageMatrix, int width, int height,int& ba
  *  @param  width The width of the image
  *  @param  height The height of the image
  */
-void SilCounter::printImageMatrix(int** imageMatrix, int width, int height)
-{
+void SilCounter::printImageMatrix(int** imageMatrix, int width, int height){
     string filePath = "";
     cout << "Enter file path to print the image matrix there.\n";
     cin >> filePath;
@@ -160,8 +156,7 @@ void SilCounter::printImageMatrix(int** imageMatrix, int width, int height)
  *  @param  height The height of the image
  *  @param  backgroundColor Variable that indicate background color
  */
-void SilCounter::fillSilhouette(QPoint &point, int **imageMatrix, int width, int height, int backgroundColor)
-{
+void SilCounter::fillSilhouette(QPoint &point, int **imageMatrix, int width, int height, int backgroundColor){
     // queue that store all point neighbours, with silhouette color
     MyQueue<QPoint> queueOfPoints;
 
@@ -196,8 +191,7 @@ void SilCounter::fillSilhouette(QPoint &point, int **imageMatrix, int width, int
  *  @param  path to image file
  *  @return  result the amount of silhouettes
  */
-int SilCounter::countSilhouettes(string& filePath)
-{
+int SilCounter::countSilhouettes(string& filePath){
     // pointer for 2d array that will store color's of image
     int** imageMatrix;
 
