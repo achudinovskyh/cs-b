@@ -1,6 +1,6 @@
 #include "archiver.h"
 
-int main(){
+int main(int argc, char* argv[]){
     Archiver myArch;
     string command = "";
     string filePath = "";
