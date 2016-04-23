@@ -2,11 +2,13 @@
 #define A1CALCULATOR
 #include <string>
 #include <cmath>
+#include <map>
 
 using namespace std;
 
 class CalcLogic{
 private:
+    map<char,string> variables;
 
     // pointer to char of expression string
     char* pt;
@@ -32,6 +34,8 @@ private:
 public:
     // function which calculate an expression
    double calculate(string& expr);
+   void   setVariable(char variable, string value);
+   CalcLogic();
 };
 
 

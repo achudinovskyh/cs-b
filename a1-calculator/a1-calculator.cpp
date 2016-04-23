@@ -10,6 +10,14 @@ double CalcLogic::calculate(string& expr){
     return result;
 }
 
+void CalcLogic::setVariable(char letter, string value){
+    variables[letter] = value;
+}
+
+CalcLogic::CalcLogic(){
+
+}
+
 double CalcLogic::number(){
     // variable that store current number
     double result = 0.0;
@@ -170,6 +178,20 @@ void CalcLogic::validate(string& pExp){
             tolower(pExp[i]);
         }
     }
+
+    if(variables.size()){
+        for(map<char,string>::iterator it = variables.begin(); it != variables.end(); it++){
+            char variable = it->first;
+            string value = it->second;
+            for(int i = 0; i < pExp.size(); i++){
+                if(pExp[i] == variable && !isalpha(pExp[i-1]) && !isalpha(pExp[i+1])){
+                    pExp.erase(i,1);
+                    pExp.insert(i,value);
+                }
+            }
+        }
+    }
+
 
     // br_counter is a counter that we increment when inserting "("
     int  br_counter = 0;
