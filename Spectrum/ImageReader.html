@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+    body {
+        font-size:18pt;
+    }
+    #filedrop {
+        
+        width: 300px;
+        height: 100px;
+        color: Gray;
+        border: 5px dashed Grey;
+    }
+    #canvas {
+        border: 1px dotted black;
+        margin: 10px;
+    }
+</style>
+<title>ImageReader</title>
+
+<script type="text/javascript">
+    var image;
+    
+    function init() {
+      var bHaveFileAPI = (window.File && window.FileReader);
+
+        if (!bHaveFileAPI) {
+            alert("This browser doesn't support the File API");
+            return;
+        }
+
+        document.getElementById("filedrop").addEventListener("drop", onFilesDropped);
+        document.getElementById("filedrop").addEventListener("dragover", onDragOver);
+    }
+    
+    function onDragOver(theEvt) {
+        theEvt.stopPropagation();
+        theEvt.preventDefault();
+    }
+    
+    function onFilesDropped(theEvt) {
+        theEvt.stopPropagation();
+        theEvt.preventDefault();
+
+        var file = theEvt.dataTransfer.files[0];
+
+        var reader = new FileReader();
+
+        reader.onload = function (evt) {
+            image = evt.target.result;
+            image = new Int8Array(image);
+            drawImage();
+        }
+        reader.readAsArrayBuffer(file);  
+    }
+    
+    function drawImage() {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        
+        var index = 0;  // byte number in array
+        var yCordinate = 0;
+        var rowCount = 1;
+        
+        // draw a black and white picture
+        for(var third = 0; third < 3; third++){ // part of the screen
+            
+            var factor = third * 56; // factor for the transition to the next third
+            
+            for(var row = 0 ; row < 64; row++){ 
+                for(var byte = 0; byte < 32; byte++,index++){
+                    
+                    var temp = image[index]; // current byte 
+                    
+                    for(var bit = 0; bit < 8; bit++) {
+                        if(temp & 1 << (7-bit)){
+                            ctx.fillRect((byte*8) + bit, yCordinate + factor , 1, 1);
+                        }
+                    }
+                } 
+                
+                yCordinate += 8;
+                
+                if((row+1)%8 == 0){ // after the passage of eight rows, transition to next after initial
+                    yCordinate = rowCount++;
+                }
+            }
+        }
+        
+        // add colors to the picture
+        for(var y = 0; y < 24; y++){  // amount of squares 8*8 on y
+           for(var x = 0; x < 32; x++){ // amount of squares 8*8 on x
+               var imageData = ctx.getImageData(x * 8, y * 8, 8, 8); 
+               var data = imageData.data; // pixel data of a square
+               
+               var temp = image[index]; // current byte with color info
+               
+               var bright = (temp & 1 << 6) ? 1 : 0;
+               var color = bright ? 255 : 205;
+               
+               var backGroundColor = 0;
+               for(var i = 0; i < 3; i++){
+                   backGroundColor *= 10
+                   backGroundColor += temp & 1 << (5 - i) ? 1 : 0;
+               }
+               
+               var foreGroundColor = 0;
+               for(var i = 0; i < 3; i++){
+                   foreGroundColor *= 10
+                   foreGroundColor += temp & 1 << (2 - i) ? 1 : 0;
+               }
+               
+               for(var pCount = 0; pCount < 64; pCount++){
+                   var tempColor;
+                   if(data[3 +(4*pCount)]){  // if true -> current pixel is not transparent, will have foreground color 
+                       tempColor = foreGroundColor;            
+                   }else{ // pixel transparant, will have background color
+                       tempColor = backGroundColor;  
+                   }
+                   switch(tempColor) { // set the color to the pixel
+                           case 0:
+                               data[3 +(4*pCount)] = 255;
+                               break;    
+                           case 1:
+                               data[2 +(4*pCount)] = color;
+                               data[3 +(4*pCount)] = 255;
+                               break;
+                           case 10:
+                               data[0 +(4*pCount)] = color;
+                               data[3 +(4*pCount)] = 255;
+                               break;
+                           case 11:
+                               data[0 +(4*pCount)] = color;
+                               data[2 +(4*pCount)] = color;
+                               data[3 +(4*pCount)] = 255;
+                               break;
+                           case 100:
+                               data[1 +(4*pCount)] = color;
+                               data[3 +(4*pCount)] = 255;
+                               break;   
+                           case 101:
+                               data[1 +(4*pCount)] = color;
+                               data[2 +(4*pCount)] = color;
+                               data[3 +(4*pCount)] = 255;
+                               break;    
+                           case 110:
+                               data[0 +(4*pCount)] = color;
+                               data[1 +(4*pCount)] = color;
+                               data[3 +(4*pCount)] = 255;
+                               break;
+                           case 111:
+                               data[0 +(4*pCount)] = color;
+                               data[1 +(4*pCount)] = color;
+                               data[2 +(4*pCount)] = color;
+                               data[3 +(4*pCount)] = 255;
+                               break;     
+                       } 
+                   
+               }
+               ctx.putImageData(imageData, x*8, y*8);
+               index++;
+           }
+        } 
+        
+    }
+
+    window.addEventListener("load", init);
+</script>
+</head>
+<body>
+<h1>Spectrum Image Reader</h1>
+<p>Drop file here: </p>
+<div id="filedrop"></div>
+<canvas id="canvas" width="256" height="192"></canvas>
+</body>
+</html>
